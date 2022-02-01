@@ -1,4 +1,3 @@
-from numpy import square
 import pygame
 from square import Square
 
@@ -16,12 +15,22 @@ class Board:
 
     #returns the surface of the board
     def getImage(self):
-        boardSurface = pygame.Surface((400,400), pygame.SRCALPHA)
+        self.boardSurface = pygame.Surface((400,400), pygame.SRCALPHA)
         for row in range(8):
             for col in range(8):
                 if not self.squares[row][col].state == "unoccupied":
-                    boardSurface.blit(self.squares[row][col].getImage(),(col*50,row*50))
-        return boardSurface
+                   self.boardSurface.blit(self.squares[row][col].image,(col*50,row*50))
+        return self.boardSurface
+
+    def updateImage(self):
+        self.boardSurface = pygame.Surface((400,400), pygame.SRCALPHA)
+        showingMoveSquare = None
+        for row in range(8):
+            for col in range(8):
+                if not self.squares[row][col].state == "unoccupied":
+                    self.boardSurface.blit(self.squares[row][col].setImage(),(col*50,row*50))
+                #if self.squares[row][col].state == "showingMoves"
+        return self.boardSurface
                 
 
 
