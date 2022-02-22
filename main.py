@@ -19,11 +19,17 @@ def main():
     #initializes the board class with the starting position
     board = Board()
 
+    board.updateImage()
+
     #blits inital board onto surface
     display.blit(board.getImage(),(0,0))
 
+    hoveringSquare = board.squares[0][0]
+
     #continuous loop
     while True:
+
+        display.blit(boardImage,(0,0))
 
         #gets all events in pygame.event
         for event in pygame.event.get():
@@ -35,17 +41,20 @@ def main():
 
 
             if event.type == pygame.MOUSEMOTION:
-                for row in board.squares:
-                    for square in row:
-                        if square.state == "hovering":
-                            square.state = "occupied"
                 mousePos = event.__dict__["pos"]
                 col = int(mousePos[0] / 50)
                 row = int(mousePos[1] / 50)
-                hoveringSquare = board.squares[row][col]
-                if hoveringSquare.state == "occupied":
-                    hoveringSquare.state = "hovering"
-                display.blit(board.getImage(),(0,0))
+                if not hoveringSquare == board.squares[row][col]:
+                    if hoveringSquare.state == "hovering":
+                        hoveringSquare.state = "occupied"
+                    hoveringSquare = board.squares[row][col]
+                    if hoveringSquare.state == "occupied":
+                        hoveringSquare.state = "hovering"
+                    board.updateImage()
+                    
+
+        
+        display.blit(board.getImage(),(0,0))
 
         #updates display
         #TODO doesn't need to update ever run
